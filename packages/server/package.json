@@ -1,0 +1,31 @@
+{
+  "name": "@promptfill/server",
+  "version": "0.1.0",
+  "description": "PromptFill API: turns a prompt + scanned form fields into validated values using Claude.",
+  "type": "module",
+  "main": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js"
+    }
+  },
+  "bin": { "promptfill-server": "./dist/cli.js" },
+  "files": ["dist"],
+  "scripts": {
+    "build": "tsup src/index.ts src/cli.ts --format esm --dts --clean --target node20",
+    "dev": "tsx watch src/cli.ts",
+    "start": "node dist/cli.js"
+  },
+  "dependencies": {
+    "@anthropic-ai/sdk": "^0.68.0",
+    "express": "^4.21.2"
+  },
+  "devDependencies": {
+    "@promptfill/core": "0.1.0",
+    "@types/express": "^5.0.0",
+    "tsx": "^4.19.2"
+  },
+  "license": "MIT"
+}

@@ -1,0 +1,29 @@
+{
+  "name": "@promptfill/widget",
+  "version": "0.1.0",
+  "description": "Drop-in widget that fills any form on your site from a natural-language prompt.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "unpkg": "./dist/promptfill.global.js",
+  "jsdelivr": "./dist/promptfill.global.js",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./global": "./dist/promptfill.global.js"
+  },
+  "files": ["dist"],
+  "sideEffects": ["./dist/promptfill.global.js"],
+  "scripts": {
+    "build": "tsup"
+  },
+  "devDependencies": {
+    "@promptfill/core": "0.1.0"
+  },
+  "keywords": ["forms", "autofill", "testing", "llm", "claude", "devtools"],
+  "license": "MIT"
+}
