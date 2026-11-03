@@ -27,6 +27,10 @@ export interface FieldDescriptor {
   label: string;
   /** The element's name attribute, when it has one. Helps the model. */
   name?: string;
+  /** The element's id, when it has one and differs from the name. */
+  id?: string;
+  /** The autocomplete token(s), e.g. "given-name" or "shipping postal-code". A strong hint. */
+  autocomplete?: string;
   required?: boolean;
   /** Allowed values for select / multiselect / radio. */
   options?: { value: string; label: string }[];

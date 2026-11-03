@@ -1,10 +1,14 @@
 import { useState } from 'react';
+import { fakerTransport } from '@promptfill/faker';
+import { fakerForLocale } from '@promptfill/faker/locales';
 import { usePromptFill } from './usePromptFill';
 import { CheckoutForm } from './CheckoutForm';
 import { IntakeForm } from './IntakeForm';
 
 const ENDPOINT = import.meta.env.VITE_PROMPTFILL_ENDPOINT ?? 'http://localhost:8787';
 const KEY = import.meta.env.VITE_PROMPTFILL_KEY ?? 'pk_demo';
+// VITE_PROMPTFILL_OFFLINE=1 skips the server: Faker picks a generator per field from its id/name/label.
+const OFFLINE = import.meta.env.VITE_PROMPTFILL_OFFLINE === '1';
 
 type User = { name: string; role: 'developer' | 'customer'; token: string };
 
@@ -20,6 +24,7 @@ export function App() {
 
   // Only developers get the widget; customers never see it.
   usePromptFill(user?.role === 'developer', {
+    transport: OFFLINE ? fakerTransport({ faker: fakerForLocale }) : undefined,
     endpoint: ENDPOINT,
     publishableKey: KEY,
     getAuthToken: () => user?.token,

@@ -1,5 +1,6 @@
 import { LIMITS, type FieldValue, type FillResponse } from '@promptfill/core';
 import { applyValues, restore, snapshot, type Snapshot } from './fill';
+import { fillData as fillFromData, type FillDataOptions, type FillDataResult } from './match';
 import { HOST_ATTR, scan, type ScanResult } from './scan';
 import { styles } from './styles';
 import { httpTransport, type HttpTransportOptions, type Transport } from './transport';
@@ -42,6 +43,11 @@ export interface PromptFillInstance {
   rescan(): ScanResult;
   /** Run a prompt programmatically, e.g. from a test. */
   fill(prompt: string, opts?: { confirm?: boolean }): Promise<FillResponse>;
+  /**
+   * Fill from a plain object without the model. Keys match fields by id, name,
+   * label, placeholder, test id, autocomplete or CSS selector; see `fillData`.
+   */
+  fillData(data: Record<string, FieldValue>, opts?: Omit<FillDataOptions, 'scan' | 'formSelector'>): FillDataResult;
   undo(): void;
   destroy(): void;
 }
@@ -260,6 +266,18 @@ export function init(options: PromptFillOptions): PromptFillInstance {
     }
   }
 
+  function runData(data: Record<string, FieldValue>, o: Omit<FillDataOptions, 'scan' | 'formSelector'> = {}): FillDataResult {
+    const scanResult = scan(document, { selector: options.formSelector, includeSensitive: o.includeSensitive });
+    lastSnapshot = snapshot(scanResult.fields);
+    const result = fillFromData(data, { ...o, scan: scanResult, highlight: o.highlight ?? true });
+    undoBtn.hidden = false;
+    const problems = [...result.failed, ...result.unmatched];
+    if (problems.length) setStatus(`Filled ${result.filled}. Couldn't fill: ${problems.join(', ')}`, 'warn');
+    else setStatus(`Filled ${result.filled} field${result.filled === 1 ? '' : 's'}.`, 'ok');
+    options.onFill?.({ filled: result.filled, failed: result.failed, values: data });
+    return result;
+  }
+
   // ---- events ------------------------------------------------------------
   const open = () => {
     launcher.hidden = true;
@@ -336,6 +354,7 @@ export function init(options: PromptFillOptions): PromptFillInstance {
     toggle,
     rescan: doScan,
     fill: (prompt, o) => run(prompt, o?.confirm ?? false),
+    fillData: runData,
     undo,
     destroy() {
       document.removeEventListener('keydown', onKey);

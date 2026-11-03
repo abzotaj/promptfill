@@ -10,6 +10,8 @@ export default defineConfig({
   resolve: {
     alias: {
       '@promptfill/widget': src('../../packages/widget/src/index.ts'),
+      '@promptfill/faker/locales': src('../../packages/faker/src/locales.ts'),
+      '@promptfill/faker': src('../../packages/faker/src/index.ts'),
       '@promptfill/core': src('../../packages/core/src/index.ts'),
     },
   },

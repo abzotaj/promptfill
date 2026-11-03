@@ -6,11 +6,19 @@
   "type": "module",
   "scripts": {
     "build": "tsup && node scripts/copy-public.mjs",
-    "zip": "npm run build && cd dist && zip -qr ../promptfill-extension.zip ."
+    "zip": "npm run build && cd dist && zip -qr ../promptfill-extension.zip .",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@promptfill/core": "0.1.0",
     "@promptfill/widget": "0.1.0",
-    "@types/chrome": "^0.0.287"
+    "@types/chrome": "^0.0.287",
+    "@promptfill/faker": "0.1.0"
+  },
+  "nx": {
+    "tags": [
+      "type:app",
+      "scope:extension"
+    ]
   }
 }

@@ -1,0 +1,49 @@
+{
+  "name": "@promptfill/faker",
+  "version": "0.1.0",
+  "description": "Offline data for PromptFill: picks a Faker generator for each field from its id, name, label, type, autocomplete and constraints.",
+  "type": "module",
+  "main": "./dist/index.cjs",
+  "module": "./dist/index.js",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.cjs"
+    },
+    "./locales": {
+      "types": "./dist/locales.d.ts",
+      "import": "./dist/locales.js",
+      "require": "./dist/locales.cjs"
+    }
+  },
+  "files": [
+    "dist"
+  ],
+  "scripts": {
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
+  },
+  "dependencies": {
+    "@faker-js/faker": "^10.6.0"
+  },
+  "devDependencies": {
+    "@promptfill/core": "0.1.0"
+  },
+  "keywords": [
+    "faker",
+    "forms",
+    "autofill",
+    "testing",
+    "devtools"
+  ],
+  "license": "MIT",
+  "nx": {
+    "tags": [
+      "type:lib",
+      "scope:faker"
+    ]
+  }
+}

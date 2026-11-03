@@ -1,4 +1,5 @@
 import { init, PromptFillError, type PromptFillInstance, type Transport } from '@promptfill/widget';
+import { fakerTransport } from '@promptfill/faker';
 import type { FillResponse } from '@promptfill/core';
 import type { MessageReply, Settings } from './settings';
 
@@ -18,11 +19,16 @@ declare global {
 
   const settings = await send<Settings>({ type: 'promptfill:settings' });
 
-  const transport: Transport = async (request) => send<FillResponse>({ type: 'promptfill:fill', request });
+  // Offline: Faker runs right here in the page, picking a generator per field from its
+  // id / name / label / autocomplete. Server: the background worker calls your API.
+  const transport: Transport =
+    settings.source === 'offline'
+      ? fakerTransport()
+      : async (request) => send<FillResponse>({ type: 'promptfill:fill', request });
 
   window.__promptfill = init({
     transport,
-    title: 'PromptFill',
+    title: settings.source === 'offline' ? 'PromptFill · offline' : 'PromptFill',
     theme: settings.theme,
     locale: settings.locale || undefined,
     confirm: settings.confirm,

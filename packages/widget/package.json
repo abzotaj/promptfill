@@ -16,14 +16,33 @@
     },
     "./global": "./dist/promptfill.global.js"
   },
-  "files": ["dist"],
-  "sideEffects": ["./dist/promptfill.global.js"],
+  "files": [
+    "dist"
+  ],
+  "sideEffects": [
+    "./dist/promptfill.global.js"
+  ],
   "scripts": {
-    "build": "tsup"
+    "build": "tsup",
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json"
   },
   "devDependencies": {
     "@promptfill/core": "0.1.0"
   },
-  "keywords": ["forms", "autofill", "testing", "llm", "claude", "devtools"],
-  "license": "MIT"
+  "keywords": [
+    "forms",
+    "autofill",
+    "testing",
+    "llm",
+    "claude",
+    "devtools"
+  ],
+  "license": "MIT",
+  "nx": {
+    "tags": [
+      "type:lib",
+      "scope:widget"
+    ]
+  }
 }

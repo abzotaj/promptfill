@@ -10,14 +10,17 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
       - uses: actions/setup-node@v4
         with:
           node-version: 22
           cache: npm
       - run: npm ci
-      - run: npm run build
-      - run: npm run typecheck
-      - run: npm test
+      # Sets NX_BASE / NX_HEAD so `nx affected` compares against the right commit.
+      - uses: nrwl/nx-set-shas@v4
+      - name: Build, typecheck and test (all projects)
+        run: npx nx run-many -t build typecheck test
       - name: Package extension
         run: cd apps/extension/dist && zip -qr ../../../promptfill-extension.zip .
       - uses: actions/upload-artifact@v4

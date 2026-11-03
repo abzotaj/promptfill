@@ -5,3 +5,9 @@ dist/
 .env.local
 .DS_Store
 *.zip
+.nx/cache
+.nx/workspace-data
+
+
+
+.nx/migrate-runs

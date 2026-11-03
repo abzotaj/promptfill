@@ -22,6 +22,7 @@ export interface ScanResult {
 const TEXTLIKE: Record<string, FieldKind> = {
   text: 'text',
   search: 'text',
+  password: 'text', // only reachable with includeSensitive
   email: 'email',
   tel: 'tel',
   url: 'url',
@@ -64,7 +65,14 @@ export function pickRoot(doc: Document, selector?: string): ParentNode {
   return best ?? doc;
 }
 
-export function scan(doc: Document, opts: { selector?: string } = {}): ScanResult {
+export interface ScanOptions {
+  /** CSS selector for the form/root to scan. Defaults to auto-detect. */
+  selector?: string;
+  /** Include password / card / OTP fields. Never used on the LLM path; only for fillData(). */
+  includeSensitive?: boolean;
+}
+
+export function scan(doc: Document, opts: ScanOptions = {}): ScanResult {
   const root = pickRoot(doc, opts.selector);
   const fields: ScannedField[] = [];
   const usedKeys = new Set<string>();
@@ -76,6 +84,7 @@ export function scan(doc: Document, opts: { selector?: string } = {}): ScanResul
     const type = el instanceof HTMLInputElement ? el.type.toLowerCase() : undefined;
 
     if (
+      !opts.includeSensitive &&
       isSensitiveField({
         type,
         autocomplete: el.getAttribute('autocomplete'),
@@ -122,6 +131,9 @@ export function scan(doc: Document, opts: { selector?: string } = {}): ScanResul
       name: el.getAttribute('name') || undefined,
       required: el.required || undefined,
     };
+    if (el.id && el.id !== descriptor.name) descriptor.id = el.id;
+    const ac = el.getAttribute('autocomplete')?.trim().toLowerCase();
+    if (ac && ac !== 'on' && ac !== 'off') descriptor.autocomplete = ac;
 
     if (el instanceof HTMLSelectElement) {
       descriptor.options = Array.from(el.options)

@@ -2,7 +2,7 @@
   "manifest_version": 3,
   "name": "PromptFill",
   "version": "0.1.0",
-  "description": "Fill any form on any site from a prompt. Uses your PromptFill server.",
+  "description": "Fill any form on any site: offline with Faker, or from a prompt via your PromptFill server.",
   "action": {
     "default_title": "PromptFill: fill this page's form",
     "default_icon": { "16": "icons/16.png", "32": "icons/32.png", "48": "icons/48.png", "128": "icons/128.png" }

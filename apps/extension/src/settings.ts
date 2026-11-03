@@ -1,4 +1,6 @@
 export interface Settings {
+  /** 'server': ask your PromptFill server (Claude). 'offline': generate locally with Faker, no server needed. */
+  source: 'server' | 'offline';
   endpoint: string;
   publishableKey: string;
   locale: string;
@@ -7,6 +9,7 @@ export interface Settings {
 }
 
 export const DEFAULT_SETTINGS: Settings = {
+  source: 'offline',
   endpoint: 'http://localhost:8787',
   publishableKey: 'pk_ext',
   locale: '',

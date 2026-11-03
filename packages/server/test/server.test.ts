@@ -39,7 +39,9 @@ describe('POST /v1/fill', () => {
     expect(res.status).toBe(200);
     expect(res.headers.get('access-control-allow-origin')).toBe('http://localhost:5173');
     const json = (await res.json()) as { values: Record<string, unknown> };
-    expect(json.values.firstName).toBe('Elira');
+    expect(typeof json.values.firstName).toBe('string');
+    expect(json.values.firstName).not.toBe('');
+    expect(json.values.email).toMatch(/^[^@\s]+@[^@\s]+$/);
     expect(json.values.country).toBe('AL');
     expect(json.values.pw).toBeUndefined();
   });

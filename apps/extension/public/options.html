@@ -27,6 +27,15 @@
     <p class="sub">Click the toolbar icon (or press <code>Alt+Shift+F</code>) on any page to fill its form from a prompt.</p>
 
     <form id="form">
+      <label for="source">Data source
+        <small>Offline needs nothing else: values come from Faker, chosen per field from its id, name, label and type. Server uses Claude through your PromptFill server.</small>
+      </label>
+      <select id="source">
+        <option value="offline">Offline (Faker, no server)</option>
+        <option value="server">PromptFill server (Claude)</option>
+      </select>
+
+      <div id="server-settings">
       <label for="endpoint">Server URL
         <small>Your PromptFill server. Run it locally with <code>npm run dev:server</code>.</small>
       </label>
@@ -35,7 +44,8 @@
       <label for="publishableKey">Publishable key
         <small>Must be allowed for <code>chrome-extension://</code> origins in the server's PROMPTFILL_SITES.</small>
       </label>
-      <input id="publishableKey" type="text" required placeholder="pk_ext" />
+      <input id="publishableKey" type="text" placeholder="pk_ext" />
+      </div>
 
       <label for="locale">Locale for generated data
         <small>Optional, e.g. <code>sq-AL</code>, <code>de-CH</code>. Empty uses the browser's language.</small>

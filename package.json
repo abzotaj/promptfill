@@ -5,21 +5,27 @@
   "description": "Prompt-driven form filling: an embeddable widget (npm), a Chrome extension, and the API server behind them.",
   "workspaces": [
     "packages/core",
+    "packages/faker",
     "packages/widget",
     "packages/server",
     "apps/extension",
     "apps/demo"
   ],
   "scripts": {
-    "build": "npm run build -w @promptfill/core && npm run build -w @promptfill/widget && npm run build -w @promptfill/server && npm run build -w @promptfill/extension && npm run build -w @promptfill/demo",
-    "dev:server": "npm run dev -w @promptfill/server",
-    "dev:demo": "npm run dev -w @promptfill/demo",
-    "test": "vitest run",
-    "typecheck": "tsc -p packages/core && tsc -p packages/widget && tsc -p packages/server && tsc -p apps/extension && tsc -p apps/demo"
+    "build": "nx run-many -t build",
+    "test": "nx run-many -t test",
+    "typecheck": "nx run-many -t typecheck",
+    "dev:server": "nx dev @promptfill/server",
+    "dev:demo": "nx dev @promptfill/demo",
+    "build:extension": "nx build @promptfill/extension",
+    "zip:extension": "nx zip @promptfill/extension",
+    "affected": "nx affected -t build typecheck test",
+    "graph": "nx graph"
   },
   "devDependencies": {
     "@types/node": "^22.10.0",
     "jsdom": "^25.0.1",
+    "nx": "^24.0.3",
     "tsup": "^8.3.5",
     "typescript": "^5.7.2",
     "vitest": "^2.1.8"
